@@ -5,6 +5,7 @@ if(!isset($_SESSION['uid'])){
     echo "You must be logged in to view this page!";
 }else{
     if(isset($_POST['gold'])){
+    	$health = protect($_POST['health']);
         $turns = protect($_POST['turns']);
         $id = protect($_POST['id']);
         $user_check = mysql_query("SELECT * FROM `stats` WHERE `id`='".$id."'") or die(mysql_error());
@@ -38,7 +39,7 @@ if(!isset($_SESSION['uid'])){
             }elseif( ($defense_effect /2) > ($defense_effect-$attack_effect) ) {
             	$warriordecimation = floor($_POST['warrior']*0.02);
             	echo "You have been decimated! Some troops desert due to low morale!";
-				$battle4 = mysql_query("UPDATE `stats` SET `warrior`=`warrior`-'".$warriordecimation."' WHERE `id`='".$id."'") or die(mysql_error());
+				$battle4 = mysql_query("UPDATE `unit` SET `warrior`=`warrior`-'".$warriordecimation."' WHERE `id`='".$id."'") or die(mysql_error());
 			}else{
                 echo "You lost the battle!";
             }
