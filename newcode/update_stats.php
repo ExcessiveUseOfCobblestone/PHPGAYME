@@ -2,6 +2,9 @@
 
 $health = protect($_POST['health']);
 $updatehp = $health + 1;
+if ($updatehp > 100) {
+	$updatehp = 100;
+}
 
 $income = ((2 * $unit['worker']) + ( ($health*0.01) * (2 * $unit['worker'])));
 
