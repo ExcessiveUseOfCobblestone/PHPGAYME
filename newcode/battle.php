@@ -21,6 +21,10 @@ if(!isset($_SESSION['uid'])){
             output("You cannot attack yourself!");
         }else{
             $enemy_stats = mysql_fetch_assoc($user_check);
+			$elosehp = ($enemy_stats['health']-2);
+			$losehpwin = ($health-1);
+			$losehplose =($health-3);
+			$losehpdecim =($health-5); 
             $attack_effect = $turns * 0.1 * $stats['attack'];
             $defense_effect = $enemy_stats['defense'];
             
@@ -36,16 +40,18 @@ if(!isset($_SESSION['uid'])){
                 $battle2 = mysql_query("UPDATE `stats` SET `gold`=`gold`+'".$gold_stolen."',`turns`=`turns`-'".$turns."' WHERE `id`='".$_SESSION['uid']."'") or die(mysql_error());
                 $battle3 = mysql_query("INSERT INTO `logs` (`attacker`,`defender`,`attacker_damage`,`defender_damage`,`gold`,`food`,`time`) 
                                         VALUES ('".$_SESSION['uid']."','".$id."','".$attack_effect."','".$defense_effect."','".$gold_stolen."','0','".time()."')") or die(mysql_error());
-				$losehp1 = mysql_query("UPDATE `stats` SET `health`= `health`-1 WHERE `id`='".$id."'") or die(mysql_error());
+				$losehp1 = mysql_query("UPDATE `stats` SET `health`= `".$selflosthp."' WHERE `id`='".$id."'") or die(mysql_error());
+				$losehpenemy = mysql_query("UPDATE `stats` SET `health`= '".$elosthp."' WHERE `id`='".$enemy_stats['id']."'") or die(mysql_error());
                 $stats['gold'] += $gold_stolen;
                 $stats['turns'] -= $turns;
             }elseif( ($defense_effect /2) > ($defense_effect-$attack_effect) ) {
             	$warriordecimation = floor($_POST['warrior']*0.02);
             	echo "You have been decimated! Some troops desert due to low morale!";
 				$battle4 = mysql_query("UPDATE `unit` SET `warrior`=`warrior`-'".$warriordecimation."' WHERE `id`='".$id."'") or die(mysql_error());
-				$losehp2 = mysql_query("UPDATE `stats` SET `health`= `health`-5 WHERE `id`='".$id."'") or die(mysql_error());
+				$losehp2 = mysql_query("UPDATE `stats` SET `health`= `".$losehpdecim."' WHERE `id`='".$id."'") or die(mysql_error());
 			}else{
                 echo "You lost the battle!";
+				$losehp3 = mysql_query("UPDATE `stats` SET `health`= `".$losehplose."' WHERE `id`='".$id."'") or die(mysql_error());
             }
         }
     }elseif(isset($_POST['food'])){
@@ -62,6 +68,10 @@ if(!isset($_SESSION['uid'])){
             output("You cannot attack yourself!");
         }else{
             $enemy_stats = mysql_fetch_assoc($user_check);
+			$elosehp = ($enemy_stats['health']-2);
+			$losehpwin = ($health-1);
+			$losehplose =($health-3);
+			$losehpdecim =($health-5); 
             $attack_effect = $turns * 0.1 * $stats['attack'];
             $defense_effect = $enemy_stats['defense'];
             
@@ -71,27 +81,25 @@ if(!isset($_SESSION['uid'])){
             if($attack_effect > $defense_effect){
                 $ratio = ($attack_effect - $defense_effect)/$attack_effect * $turns;
                 $ratio = min($ratio,1);
-                $food_stolen = floor($ratio * $enemy_stats['food']);
-                echo "You won the battle! You stole " . $food_stolen . " food!";
-                $battle1 = mysql_query("UPDATE `stats` SET `food`=`food`-'".$food_stolen."' WHERE `id`='".$id."'") or die(mysql_error());
-                $battle2 = mysql_query("UPDATE `stats` SET `food`=`food`+'".$food_stolen."',`turns`=`turns`-'".$turns."' WHERE `id`='".$_SESSION['uid']."'") or die(mysql_error());
+                $gold_stolen = floor($ratio * $enemy_stats['gold']);
+                echo "You won the battle! You stole " . $gold_stolen . " gold!";
+                $battle1 = mysql_query("UPDATE `stats` SET `gold`=`gold`-'".$gold_stolen."' WHERE `id`='".$id."'") or die(mysql_error());
+                $battle2 = mysql_query("UPDATE `stats` SET `gold`=`gold`+'".$gold_stolen."',`turns`=`turns`-'".$turns."' WHERE `id`='".$_SESSION['uid']."'") or die(mysql_error());
                 $battle3 = mysql_query("INSERT INTO `logs` (`attacker`,`defender`,`attacker_damage`,`defender_damage`,`gold`,`food`,`time`) 
-                                        VALUES ('".$_SESSION['uid']."','".$id."','".$attack_effect."','".$defense_effect."','0','".$food_stolen."','".time()."')") or die(mysql_error());
-				$losehp1 = mysql_query("UPDATE `stats` SET `health`= `health`-1 WHERE `id`='".$id."'") or die(mysql_error());
-                $stats['food'] += $food_stolen;
+                                        VALUES ('".$_SESSION['uid']."','".$id."','".$attack_effect."','".$defense_effect."','".$gold_stolen."','0','".time()."')") or die(mysql_error());
+				$losehp1 = mysql_query("UPDATE `stats` SET `health`= `".$selflosthp."' WHERE `id`='".$id."'") or die(mysql_error());
+				$losehpenemy = mysql_query("UPDATE `stats` SET `health`= '".$elosthp."' WHERE `id`='".$enemy_stats['id']."'") or die(mysql_error());
+                $stats['gold'] += $gold_stolen;
                 $stats['turns'] -= $turns;
-            }elseif( ($defense_effect /4) > ($defense_effect-$attack_effect) ) {
+            }elseif( ($defense_effect /2) > ($defense_effect-$attack_effect) ) {
             	$warriordecimation = floor($_POST['warrior']*0.02);
             	echo "You have been decimated! Some troops desert due to low morale!";
 				$battle4 = mysql_query("UPDATE `unit` SET `warrior`=`warrior`-'".$warriordecimation."' WHERE `id`='".$id."'") or die(mysql_error());
-				$losehp2 = mysql_query("UPDATE `stats` SET `health`= `health`-5 WHERE `id`='".$id."'") or die(mysql_error());
+				$losehp2 = mysql_query("UPDATE `stats` SET `health`= `".$losehpdecim."' WHERE `id`='".$id."'") or die(mysql_error());
 			}else{
                 echo "You lost the battle!";
+				$losehp3 = mysql_query("UPDATE `stats` SET `health`= `".$losehplose."' WHERE `id`='".$id."'") or die(mysql_error());
             }
-        }
-    }else{
-        output("You have visited this page incorrectly!");
-    }
 }
 include("footer.php");
 ?>
