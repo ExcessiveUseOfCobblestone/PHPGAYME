@@ -6,9 +6,7 @@ if ($updatehp > 100) {
 	$updatehp = 100;
 }
 
-$income = ((2 * $unit['worker']) + ( ($health*0.01) * (2 * $unit['worker'])));
 
-$farming = (5 * pow($unit['farmer'],0.5)) + (($health*0.01) * (5 * pow($unit['farmer'],0.5))) ;
 
 $num1 = min($weapon['sword'],$unit['warrior']);
 
@@ -29,14 +27,14 @@ if($num2 == $weapon['shield']){
 $num3 = min($weapon['tome'],$unit['wizard']);
 
 if($num3 == $weapon['tome']){
-	$mana = (50 * $weapon['tome']) + (10 *($unit['wizard'] - $weapon['tome']));
+	$manapow = (50 * $weapon['tome']) + (10 *($unit['wizard'] - $weapon['tome']));
 }else{
-	$mana = (10 * $unit['wizard']);
+	$manapow = (10 * $unit['wizard']);
 }
 $update_stats = mysql_query("UPDATE `stats` SET 
                             `health`='".$updatehp."', `income`='".$income."', `farming`='".$farming."',
                             `attack`='".$attack."',`defense`='".$defense."',
-                            `mana`='".$mana."'
+                            `manapow`='".$manapow."'
                             WHERE `id`='".$_SESSION['uid']."'") or die(mysql_error());
 
 ?>

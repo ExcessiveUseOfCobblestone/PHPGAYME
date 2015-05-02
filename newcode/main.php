@@ -18,11 +18,20 @@ if(!isset($_SESSION['uid'])){
             <td></td>
         </tr>
         <tr>
+            <td>Health:</td>
+            <td><i><?php echo $stats['health']; ?></i></td>
+        </tr>
+        <tr>
+        <tr>
             <td>Attack:</td>
             <td><i><?php echo $stats['attack']; ?></i></td>
         </tr>
         <tr>
             <td>Defense:</td>
+            <td><i><?php echo $stats['defense']; ?></i></td>
+        </tr>
+        <tr>
+            <td>Mana:</td>
             <td><i><?php echo $stats['defense']; ?></i></td>
         </tr>
         <tr>
@@ -42,8 +51,8 @@ if(!isset($_SESSION['uid'])){
             <td><i><?php echo $stats['farming']; ?></i></td>
         </tr>
          <tr>
-            <td>Mana:</td>
-            <td><i><?php echo $stats['mana']; ?></i></td>
+            <td>Mana Power:</td>
+            <td><i><?php echo $stats['manapow']; ?></i></td>
         </tr>
         <tr>
             <td>Turns:</td>
