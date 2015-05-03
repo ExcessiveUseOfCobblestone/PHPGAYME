@@ -44,7 +44,7 @@ if(!isset($_SESSION['uid'])){
 				$losehpenemy = mysql_query("UPDATE `stats` SET `health`= '".$elosthp."' WHERE `id`='".$enemy_stats['id']."'") or die(mysql_error());
                 $stats['gold'] += $gold_stolen;
                 $stats['turns'] -= $turns;
-            }elseif( ($defense_effect /2) > ($defense_effect-$attack_effect) ) {
+            }elseif( floor($defense_effect /3) > ($defense_effect-$attack_effect) ) {
             	$warriordecimation = floor($_POST['warrior']*0.02);
             	echo "You have been decimated! Some troops desert due to low morale!";
 				$battle4 = mysql_query("UPDATE `unit` SET `warrior`=`warrior`-'".$warriordecimation."' WHERE `id`='".$id."'") or die(mysql_error());
@@ -91,7 +91,7 @@ if(!isset($_SESSION['uid'])){
 				$losehpenemy = mysql_query("UPDATE `stats` SET `health`= '".$elosthp."' WHERE `id`='".$enemy_stats['id']."'") or die(mysql_error());
                 $stats['gold'] += $gold_stolen;
                 $stats['turns'] -= $turns;
-            }elseif( ($defense_effect /2) > ($defense_effect-$attack_effect) ) {
+            }elseif( floor($defense_effect /3) > ($defense_effect-$attack_effect) ) {
             	$warriordecimation = floor($_POST['warrior']*0.02);
             	echo "You have been decimated! Some troops desert due to low morale!";
 				$battle4 = mysql_query("UPDATE `unit` SET `warrior`=`warrior`-'".$warriordecimation."' WHERE `id`='".$id."'") or die(mysql_error());
