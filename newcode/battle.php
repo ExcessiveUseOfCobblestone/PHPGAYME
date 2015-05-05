@@ -87,7 +87,7 @@ if(!isset($_SESSION['uid'])){
                 $battle2 = mysql_query("UPDATE `stats` SET `gold`=`gold`+'".$gold_stolen."',`turns`=`turns`-'".$turns."' WHERE `id`='".$_SESSION['uid']."'") or die(mysql_error());
                 $battle3 = mysql_query("INSERT INTO `logs` (`attacker`,`defender`,`attacker_damage`,`defender_damage`,`gold`,`food`,`time`) 
                                         VALUES ('".$_SESSION['uid']."','".$id."','".$attack_effect."','".$defense_effect."','".$gold_stolen."','0','".time()."')") or die(mysql_error());
-				$losehp1 = mysql_query("UPDATE `stats` SET `health`= `".$selflosthp."' WHERE `id`='".$id."'") or die(mysql_error());
+				$losehp1 = mysql_query("UPDATE `stats` SET `health`= '".$selflosthp."' WHERE `id`='".$id."'") or die(mysql_error());
 				$losehpenemy = mysql_query("UPDATE `stats` SET `health`= '".$elosthp."' WHERE `id`='".$enemy_stats['id']."'") or die(mysql_error());
                 $stats['gold'] += $gold_stolen;
                 $stats['turns'] -= $turns;
