@@ -101,5 +101,8 @@ if(!isset($_SESSION['uid'])){
 				$losehp3 = mysql_query("UPDATE `stats` SET `health`= `".$losehplose."' WHERE `id`='".$id."'") or die(mysql_error());
             }
 }
+	}else{
+       output("You have visited this page incorrectly!");
+    }
 include("footer.php");
 ?>
